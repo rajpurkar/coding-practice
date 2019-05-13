@@ -1,9 +1,12 @@
+"""Bootstrap."""
 import sklearn.metrics
 import warnings
 import numpy as np
 
+
 def bootstrap_metric(
-        y_true, y_pred, metric,
+        y_true, y_pred,
+        metric,
         confidence_level=0.95,
         num_replicates=1000,
         **kwargs):
@@ -57,7 +60,8 @@ def bootstrap_metric(
     return metric_tuple
 
 
-def main():
+def test_bootstrap_metric():
+    """Run a test for bootstrap for the AUC metric."""
     num = 1000
     y_true = np.random.choice([0, 0, 1], size=num)
     y_pred = np.random.choice([0, 0, 1], size=num)
@@ -65,9 +69,10 @@ def main():
             y_true, y_pred,
             sklearn.metrics.roc_auc_score
             )
-    print(auc_tup)
+    auc_expected = sklearn.metrics.roc_auc_score(y_true, y_pred)
+    assert(auc_expected - auc_tup[1] < 0.01)
 
 
 if __name__ == '__main__':
-    main()
+    test_bootstrap_metric()
 
