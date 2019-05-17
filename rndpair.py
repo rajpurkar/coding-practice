@@ -1,6 +1,11 @@
 import fileinput
 import random
 
+def chefu_solution_2(numbers):
+    indices = list(range(len(numbers)))
+    i = random.choice(indices)
+    j = random.choice(indices[:i] + indices[i+1:])
+    return numbers[i] + numbers[j]
 
 def chefu_solution(numbers):
     possibilities = []
@@ -26,11 +31,10 @@ def real_solution(numbers):
 
 def is_equal(numbers):
     successes = 0
-    tries = 1000000
+    tries = 100000
     real_max = real_solution(numbers)
-    sol = chefu_solution(numbers)
     for _ in range(tries):
-        ch_max = sol()
+        ch_max = chefu_solution_2(numbers)
         if ch_max == real_max:
             successes += 1
     return successes / tries
